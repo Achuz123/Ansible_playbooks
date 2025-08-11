@@ -1,0 +1,10 @@
+---
+- name: Install a tool on my local machine
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install the htop package
+      ansible.builtin.apt:
+        name: htop
+        state: present
+        update_cache: yes
