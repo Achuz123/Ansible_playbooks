@@ -1,0 +1,29 @@
+---
+- name: Deploy our web application using Docker
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Install Docker engine
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Ensure Docker service is running
+      ansible.builtin.service:
+        name: docker
+        state: started
+
+    - name: Pull the application's Docker image from a registry
+      community.docker.docker_image:
+        name: your_username/your_app:latest
+        source: pull
+
+    - name: Run the application container
+      community.docker.docker_container:
+        name: my-running-app
+        image: your_username/your_app:latest
+        state: started
+        restart_policy: always
+        ports:
+          - "80:5000"
